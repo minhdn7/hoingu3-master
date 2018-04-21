@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.mkit.hoingu3.R;
+import com.hoingu3.app.utils.AppDef;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +37,7 @@ public class GameOverActivity extends BaseActivity {
 
     @OnClick(R.id.btn_play_again)
     public void onViewClicked() {
+        AppDef.LifeScore = 2;
         startActivity(new Intent(this, PlayActivity.class));
     }
 }

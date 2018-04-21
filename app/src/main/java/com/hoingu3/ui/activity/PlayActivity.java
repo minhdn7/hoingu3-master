@@ -49,14 +49,23 @@ public class PlayActivity extends BaseActivity {
     private String gtC = "";
     private String gtD = "";
 
+    private Integer minId = 1;
+    private Integer maxId = 353;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         ButterKnife.bind(this);
         initView();
-        int random = new Random().nextInt(1) + 353;
+        int random = new Random().nextInt(maxId - minId + 1) + minId;
         getData(random);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     private void initView() {
