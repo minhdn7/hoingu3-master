@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background"
+    tools:context="com.hoingu3.ui.activity.AnswerActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <RelativeLayout
+            android:id="@+id/view_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_4sdp">
+            <ImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@mipmap/btn_soundon"/>
+            <ImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/btn_moregame_2"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_noi_dung"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:gravity="center"
+                android:textSize="@dimen/_14sdp"
+                android:padding="@dimen/_40sdp"
+                android:textStyle="bold"
+                android:text="Khó vậy mà đoán được ak, giỏi quá đi"
+                android:background="@mipmap/bubble_1"/>
+
+            <ImageView
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/_80sdp"
+                android:src="@mipmap/beauty" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/btn_add_lifesaver"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:src="@mipmap/btn_add_lifesaver"/>
+
+        <ImageView
+            android:id="@+id/btn_next"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:src="@mipmap/btn_next"/>
+    </LinearLayout>
+</RelativeLayout>

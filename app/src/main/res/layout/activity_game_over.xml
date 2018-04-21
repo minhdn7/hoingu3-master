@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background"
+    tools:context="com.hoingu3.ui.activity.GameOverActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <RelativeLayout
+            android:id="@+id/view_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_4sdp">
+            <ImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@mipmap/btn_soundon"/>
+            <ImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/btn_moregame_2"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@mipmap/gameover"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:paddingRight="@dimen/_20sdp">
+            <ImageView
+                android:id="@+id/ic_too_sad"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:src="@mipmap/too_sad"/>
+            <TextView
+                android:id="@+id/ic_show"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:text="Mình đã rất cố gắng..."
+                android:textSize="@dimen/_16sdp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="top"
+                android:background="@mipmap/bubble_2"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@mipmap/frame_total"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_4sdp"
+            android:paddingRight="@dimen/_10sdp">
+            <TextView
+                android:id="@+id/tv_diem_cao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Điểm cao: 5"
+                android:textStyle="bold"
+                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/md_white"
+                android:layout_marginRight="@dimen/_74sdp"/>
+
+            <TextView
+                android:id="@+id/tv_do_ngu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Độ ngu: 5"
+                android:textStyle="bold"
+                android:textSize="@dimen/_13sdp"
+                android:textColor="@color/md_white"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_play_again"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/btn_playagain"/>
+    </LinearLayout>
+
+</RelativeLayout>

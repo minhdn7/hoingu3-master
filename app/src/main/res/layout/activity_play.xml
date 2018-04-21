@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hoingu3.ui.activity.PlayActivity"
+    android:background="@mipmap/background">
+    <RelativeLayout
+        android:id="@+id/view_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_4sdp">
+        <ImageView
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:src="@mipmap/btn_soundon"/>
+
+        <LinearLayout
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:background="@mipmap/lifesaver">
+            <TextView
+                android:id="@+id/tv_life"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textColor="@color/md_black"
+                android:textStyle="bold"
+                android:gravity="top"
+                android:paddingLeft="@dimen/_16sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:textSize="@dimen/_16sdp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/btn_moregame_2"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_below="@+id/view_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_30sdp">
+
+        <TextView
+            android:id="@+id/tv_tittle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Câu 1 trollerr"/>
+        <RelativeLayout
+            android:id="@+id/view_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:background="@mipmap/frame_quest"
+                android:gravity="center"
+                android:padding="@dimen/_16sdp"
+                android:textStyle="bold"
+                android:text="Câu hỏi 1, Câu hỏi 1, Câu hỏi 1, Câu hỏi 1, Câu hỏi 1, Câu hỏi 1, Câu hỏi 1, Câu hỏi 1,"/>
+
+            <ImageView
+                android:id="@+id/ic_show"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_alignBottom="@+id/tv_question"
+                android:layout_alignRight="@+id/tv_question"
+                android:src="@mipmap/feel_good"/>
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="10"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/bt_ans_a"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:background="@mipmap/btn_answer_1"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textAllCaps="false"
+                android:text="Đáp án A"/>
+            <Button
+                android:id="@+id/bt_ans_b"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:background="@mipmap/btn_answer_1"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textAllCaps="false"
+                android:text="Đáp án B"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:weightSum="10"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/bt_ans_c"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:background="@mipmap/btn_answer_1"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textAllCaps="false"
+                android:text="Đáp án C"/>
+            <Button
+                android:id="@+id/bt_ans_d"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:background="@mipmap/btn_answer_1"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:textAllCaps="false"
+                android:text="Đáp án D"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
