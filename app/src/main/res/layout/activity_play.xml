@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_4sdp">
         <ImageView
+            android:id="@+id/btn_sound"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:src="@mipmap/btn_soundon"/>

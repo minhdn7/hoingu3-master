@@ -1,6 +1,7 @@
 package com.hoingu3.ui.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,11 +34,39 @@ public class GameOverActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
         ButterKnife.bind(this);
+        addSounds();
+    }
+
+    private void addSounds(){
+        MediaPlayer mPlayer = MediaPlayer.create(this, R.raw.an_ui);
+        mPlayer.start();
     }
 
     @OnClick(R.id.btn_play_again)
     public void onViewClicked() {
         AppDef.LifeScore = 2;
         startActivity(new Intent(this, PlayActivity.class));
+        this.finish();
+    }
+
+
+    boolean doubleBackToExitPressedOnce = false;
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        showToast("Nhấn 2 lần để thoát");
+
+        new android.os.Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }

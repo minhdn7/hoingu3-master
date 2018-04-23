@@ -65,7 +65,7 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
     public InterstitialAd mInterstitialAd;
     public String ADS_BANNER = "ca-app-pub-7343050714013437/4101805153";
     public String ADS_INTER = "ca-app-pub-7343050714013437/7427694694";
-
+    private Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -419,4 +419,12 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
         }
     }
 
+    public void showToast(String message) {
+        if (toast != null) {
+          toast.cancel();
+          toast = null;
+        }
+        toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.show();
+  }
 }

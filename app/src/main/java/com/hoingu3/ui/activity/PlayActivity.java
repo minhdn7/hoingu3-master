@@ -3,6 +3,7 @@ package com.hoingu3.ui.activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,8 @@ public class PlayActivity extends BaseActivity {
     RelativeLayout viewQuestion;
     @BindView(R.id.tv_life)
     TextView tvLife;
+    @BindView(R.id.btn_sound) ImageView btnSound;
+
     private String sCorrectValue = "";
     private String gtA = "";
     private String gtB = "";
@@ -51,7 +54,8 @@ public class PlayActivity extends BaseActivity {
 
     private Integer minId = 1;
     private Integer maxId = 353;
-
+    private Boolean isPlay = true;
+    private MediaPlayer mPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +64,13 @@ public class PlayActivity extends BaseActivity {
         initView();
         int random = new Random().nextInt(maxId - minId + 1) + minId;
         getData(random);
+        addSounds();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
+    private void addSounds(){
+        mPlayer = MediaPlayer.create(this, R.raw.trong_com);
+        mPlayer.setLooping(true);
+        mPlayer.start();
     }
 
     private void initView() {
@@ -99,7 +104,7 @@ public class PlayActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bt_ans_a, R.id.bt_ans_b, R.id.bt_ans_c, R.id.bt_ans_d})
+    @OnClick({R.id.bt_ans_a, R.id.bt_ans_b, R.id.bt_ans_c, R.id.bt_ans_d, R.id.btn_sound})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_ans_a:
@@ -118,10 +123,25 @@ public class PlayActivity extends BaseActivity {
                 btAnsD.setBackgroundDrawable(getResources().getDrawable(R.mipmap.btn_answer_2));
                 checkAnswer("d", gtD);
                 break;
+            case R.id.btn_sound:
+                if(isPlay){
+                    btnSound.setImageResource(R.mipmap.btn_soundoff);
+                    mPlayer.stop();
+                }else {
+                    btnSound.setImageResource(R.mipmap.btn_soundon);
+                    mPlayer = MediaPlayer.create(this, R.raw.trong_com);
+                    mPlayer.setLooping(true);
+                    mPlayer.start();
+                }
+                isPlay = !isPlay;
+                break;
         }
     }
 
     public void checkAnswer(String response, String giaiThich) {
+        MediaPlayer mPlayer2 = MediaPlayer.create(this, R.raw.correct);
+        mPlayer2.start();
+        mPlayer.stop();
         if (!response.toLowerCase().equals(sCorrectValue)) {
             AppDef.LifeScore -= 1;
             tvLife.setText(String.valueOf(AppDef.LifeScore));
@@ -133,8 +153,30 @@ public class PlayActivity extends BaseActivity {
             Intent intent = new Intent(PlayActivity.this, AnswerActivity.class);
             intent.putExtra("GIAI_THICH", giaiThich);
             startActivity(intent);
+
         }
+        this.finish();
     }
 
+
+    boolean doubleBackToExitPressedOnce = false;
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        showToast("Nhấn 2 lần để thoát");
+
+        new android.os.Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
 }
