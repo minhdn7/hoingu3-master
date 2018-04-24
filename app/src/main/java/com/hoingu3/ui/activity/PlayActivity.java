@@ -56,13 +56,17 @@ public class PlayActivity extends BaseActivity {
     private Integer maxId = 353;
     private Boolean isPlay = true;
     private MediaPlayer mPlayer;
+    private int random  = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         ButterKnife.bind(this);
         initView();
-        int random = new Random().nextInt(maxId - minId + 1) + minId;
+        do {
+            random = new Random().nextInt(maxId - minId + 1) + minId;
+        } while (checkIdQuestion(random));
+
         getData(random);
         addSounds();
     }
@@ -145,6 +149,8 @@ public class PlayActivity extends BaseActivity {
         if (!response.toLowerCase().equals(sCorrectValue)) {
             AppDef.LifeScore -= 1;
             tvLife.setText(String.valueOf(AppDef.LifeScore));
+        }else {
+            AppDef.Score += 1;
         }
 
         if(AppDef.LifeScore <= 0){
@@ -158,6 +164,20 @@ public class PlayActivity extends BaseActivity {
         this.finish();
     }
 
+    public boolean checkIdQuestion(Integer id){
+        if(AppDef.listPlayId.size() > 0){
+            for(int i = 0; i < AppDef.listPlayId.size(); i++){
+                if(AppDef.listPlayId.get(i).equals(id)){
+                    return false;
+                }
+            }
+            AppDef.listPlayId.add(id);
+            return true;
+        }else {
+            AppDef.listPlayId.add(id);
+            return true;
+        }
+    }
 
     boolean doubleBackToExitPressedOnce = false;
     @Override

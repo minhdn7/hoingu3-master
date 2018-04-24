@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.android.mkit.hoingu3.R;
 import com.hoingu3.app.utils.AppDef;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,6 +37,21 @@ public class GameOverActivity extends BaseActivity {
         setContentView(R.layout.activity_game_over);
         ButterKnife.bind(this);
         addSounds();
+        initView();
+        initControls();
+    }
+
+    private void initControls() {
+        AppDef.LifeScore = 2;
+        AppDef.Score = 0;
+        if(AppDef.listPlayId.size() > 0){
+            AppDef.listPlayId.clear();
+        }
+    }
+
+    private void initView() {
+        tvDiemCao.setText(String.valueOf(AppDef.Score));
+        tvDoNgu.setText(String.valueOf(AppDef.Score + 1));
     }
 
     private void addSounds(){
@@ -44,7 +61,7 @@ public class GameOverActivity extends BaseActivity {
 
     @OnClick(R.id.btn_play_again)
     public void onViewClicked() {
-        AppDef.LifeScore = 2;
+
         startActivity(new Intent(this, PlayActivity.class));
         this.finish();
     }
