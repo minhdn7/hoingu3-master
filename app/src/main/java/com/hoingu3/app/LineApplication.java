@@ -1,6 +1,7 @@
 package com.hoingu3.app;
 
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -9,7 +10,7 @@ import com.hoingu3.app.di.AppModule;
 import dagger.ObjectGraph;
 import lombok.Getter;
 
-public class LineApplication extends Application {
+public class LineApplication extends MultiDexApplication {
 
     @Getter
     private String baseUrl;
