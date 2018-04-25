@@ -3,7 +3,9 @@ package com.hoingu3.ui.activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -79,6 +81,15 @@ public class PlayActivity extends BaseActivity {
 
     private void initView() {
         tvLife.setText(String.valueOf(AppDef.LifeScore));
+        //set fonts
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/SFUFuturaBook.TTF");
+        Typeface face2 = Typeface.createFromAsset(getAssets(), "fonts/SFUFuturaHeavy.TTF");
+        tvQuestion.setTypeface(face2);
+        tvTittle.setTypeface(face);
+        btAnsA.setTypeface(face2);
+        btAnsB.setTypeface(face2);
+        btAnsC.setTypeface(face2);
+        btAnsD.setTypeface(face2);
     }
 
 
@@ -93,7 +104,7 @@ public class PlayActivity extends BaseActivity {
             Cursor cursor = database.rawQuery(sQuerry, null);
             while (cursor.moveToNext()) {
                 tvQuestion.setText(cursor.getString(1));
-                tvTittle.setText(cursor.getString(11));
+
                 btAnsA.setText(cursor.getString(2));
                 btAnsB.setText(cursor.getString(3));
                 btAnsC.setText(cursor.getString(4));
@@ -104,11 +115,17 @@ public class PlayActivity extends BaseActivity {
                 gtC = cursor.getString(9).trim();
                 gtD = cursor.getString(10).trim();
 
+                try {
+                    tvTittle.setText(cursor.getString(11));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }
 
-    @OnClick({R.id.bt_ans_a, R.id.bt_ans_b, R.id.bt_ans_c, R.id.bt_ans_d, R.id.btn_sound})
+    @OnClick({R.id.bt_ans_a, R.id.bt_ans_b, R.id.bt_ans_c, R.id.bt_ans_d, R.id.btn_sound, R.id.btn_moregame})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_ans_a:
@@ -139,6 +156,9 @@ public class PlayActivity extends BaseActivity {
                 }
                 isPlay = !isPlay;
                 break;
+            case R.id.btn_moregame:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
+                break;
         }
     }
 
@@ -154,11 +174,14 @@ public class PlayActivity extends BaseActivity {
         }
 
         if(AppDef.LifeScore <= 0){
+
             startActivity(new Intent(this, GameOverActivity.class));
+            this.finish();
         }else {
             Intent intent = new Intent(PlayActivity.this, AnswerActivity.class);
             intent.putExtra("GIAI_THICH", giaiThich);
             startActivity(intent);
+            this.finish();
 
         }
         this.finish();

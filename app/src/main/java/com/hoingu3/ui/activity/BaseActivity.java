@@ -32,6 +32,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.analytics.Tracker;
 import com.hoingu3.app.LineApplication;
 import com.hoingu3.app.utils.NetworkStateChanged;
@@ -63,8 +64,10 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
     // ads
     public AdView mAdView;
     public InterstitialAd mInterstitialAd;
-    public String ADS_BANNER = "ca-app-pub-7343050714013437/4101805153";
-    public String ADS_INTER = "ca-app-pub-7343050714013437/7427694694";
+    public RewardedVideoAd mRewardedVideoAd;
+    public String ADS_BANNER = "/21617015150/15656900/21701027765";
+    public String ADS_INTER = "/21617015150/15656900/21701027999";
+    public String ADS_REWARD = "/21617015150/15656900/21700816162";
     private Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +88,14 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
         injectDependencies();
         tinyDB = new TinyDB(this);
         try {
-            mInterstitialAd = new InterstitialAd(this);
+
             mAdView = new AdView(this);
             mAdView.setAdSize(AdSize.SMART_BANNER);
             mAdView.setAdUnitId(ADS_BANNER);
+
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId(ADS_INTER);
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,9 +105,9 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
     private void initAds() {
         try {
 
-//            mAdView = findViewById(R.id.adView);
-//            AdRequest adRequest = new AdRequest.Builder().build();
-//            mAdView.loadAd(adRequest);
+            mAdView = findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }

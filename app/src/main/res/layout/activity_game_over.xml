@@ -21,6 +21,7 @@
                 android:layout_height="@dimen/_50sdp"
                 android:src="@mipmap/btn_soundon"/>
             <ImageView
+                android:id="@+id/btn_moregame"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_alignParentRight="true"
@@ -93,5 +94,13 @@
             android:scaleType="fitXY"
             android:src="@mipmap/btn_playagain"/>
     </LinearLayout>
-
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="/21617015150/15656900/21701027765"/>
 </RelativeLayout>

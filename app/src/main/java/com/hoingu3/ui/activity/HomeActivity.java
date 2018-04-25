@@ -2,6 +2,7 @@ package com.hoingu3.ui.activity;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,8 +58,10 @@ public class HomeActivity extends BaseActivity {
             case R.id.btn_rank:
                 break;
             case R.id.btn_moregame:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
                 break;
             case R.id.btn_exit:
+                this.finish();
                 break;
         }
     }
