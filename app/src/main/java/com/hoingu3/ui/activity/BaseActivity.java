@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -35,6 +36,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.analytics.Tracker;
 import com.hoingu3.app.LineApplication;
+import com.hoingu3.app.utils.AppDef;
 import com.hoingu3.app.utils.NetworkStateChanged;
 import com.hoingu3.domain.repository.TinyDB;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -433,5 +435,8 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
         }
         toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
         toast.show();
-  }
+    }
+
+
+
 }

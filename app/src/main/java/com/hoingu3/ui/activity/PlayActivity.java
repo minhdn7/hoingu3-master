@@ -70,7 +70,8 @@ public class PlayActivity extends BaseActivity {
         } while (checkIdQuestion(random));
 
         getData(random);
-        addSounds();
+        checkVoice();
+//        addSounds();
     }
 
     private void addSounds(){
@@ -145,16 +146,8 @@ public class PlayActivity extends BaseActivity {
                 checkAnswer("d", gtD);
                 break;
             case R.id.btn_sound:
-                if(isPlay){
-                    btnSound.setImageResource(R.mipmap.btn_soundoff);
-                    mPlayer.stop();
-                }else {
-                    btnSound.setImageResource(R.mipmap.btn_soundon);
-                    mPlayer = MediaPlayer.create(this, R.raw.trong_com);
-                    mPlayer.setLooping(true);
-                    mPlayer.start();
-                }
-                isPlay = !isPlay;
+                checkVoice();
+                AppDef.isVoice = !AppDef.isVoice;
                 break;
             case R.id.btn_moregame:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
@@ -220,6 +213,18 @@ public class PlayActivity extends BaseActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+    public void checkVoice(){
+        if(AppDef.isVoice){
+            btnSound.setImageResource(R.mipmap.btn_soundoff);
+            mPlayer.stop();
+        }else {
+            btnSound.setImageResource(R.mipmap.btn_soundon);
+            mPlayer = MediaPlayer.create(this, R.raw.trong_com);
+            mPlayer.setLooping(true);
+            mPlayer.start();
+        }
     }
 
 }

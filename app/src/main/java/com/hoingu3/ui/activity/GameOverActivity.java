@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.android.mkit.hoingu3.R;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdView;
 import com.hoingu3.app.utils.AppDef;
 
 import butterknife.BindView;
@@ -32,6 +33,14 @@ public class GameOverActivity extends BaseActivity {
     TextView tvDoNgu;
     @BindView(R.id.btn_play_again)
     ImageView btnPlayAgain;
+    @BindView(R.id.btn_sound)
+    ImageView btnSound;
+    @BindView(R.id.btn_moregame)
+    ImageView btnMoregame;
+    @BindView(R.id.adView)
+    AdView adView;
+
+    private MediaPlayer mPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +68,10 @@ public class GameOverActivity extends BaseActivity {
     }
 
     private void addSounds() {
-        MediaPlayer mPlayer = MediaPlayer.create(this, R.raw.an_ui);
-        mPlayer.start();
+        mPlayer = MediaPlayer.create(this, R.raw.an_ui);
+        checkVoice();
     }
 
-    @OnClick(R.id.btn_play_again)
-    public void onViewClicked() {
-
-
-    }
 
 
     boolean doubleBackToExitPressedOnce = false;
@@ -91,11 +95,15 @@ public class GameOverActivity extends BaseActivity {
         }, 2000);
     }
 
-    @OnClick({R.id.btn_moregame, R.id.btn_play_again})
+    @OnClick({R.id.btn_moregame, R.id.btn_play_again, R.id.btn_sound})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_moregame:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
+                break;
+            case R.id.btn_sound:
+                checkVoice();
+                AppDef.isVoice = !AppDef.isVoice;
                 break;
             case R.id.btn_play_again:
                 if (mInterstitialAd.isLoaded()) {
@@ -135,6 +143,19 @@ public class GameOverActivity extends BaseActivity {
                     this.finish();
                 }
                 break;
+        }
+    }
+
+
+    public void checkVoice() {
+        if (AppDef.isVoice) {
+            btnSound.setImageResource(R.mipmap.btn_soundoff);
+            mPlayer.stop();
+        } else {
+            btnSound.setImageResource(R.mipmap.btn_soundon);
+            mPlayer = MediaPlayer.create(this, R.raw.an_ui);
+            mPlayer.setLooping(true);
+            mPlayer.start();
         }
     }
 }
