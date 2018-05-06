@@ -1,12 +1,24 @@
 package com.hoingu3.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.android.mkit.hoingu3.R;
 
@@ -31,6 +43,9 @@ public class HomeActivity extends BaseActivity {
 
     private MediaPlayer mPlayer;
 
+    private SeekBar volumeSeekbar = null;
+    private AudioManager audioManager = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +69,7 @@ public class HomeActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.btn_setting:
+                dilogSetting();
                 break;
             case R.id.btn_rank:
                 break;
@@ -84,5 +100,61 @@ public class HomeActivity extends BaseActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+    public void dilogSetting(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_setting, null);
+        dialogBuilder.setView(dialogView);
+
+        final AlertDialog b = dialogBuilder.create();
+        b.setCanceledOnTouchOutside(false);
+        b.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        b.show();
+        volumeSeekbar = (SeekBar) b.findViewById(R.id.seekBar);
+        Button btnOk = (Button) b.findViewById(R.id.btn_ok);
+        final ImageView btnSound = (ImageView) b.findViewById(R.id.btn_sound);
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        volumeSeekbar.setMax(audioManager
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        volumeSeekbar.setProgress(audioManager
+                .getStreamVolume(AudioManager.STREAM_MUSIC));
+
+
+        volumeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            @Override
+            public void onStopTrackingTouch(SeekBar arg0)
+            {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar arg0)
+            {
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar arg0, int progress, boolean arg2)
+            {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                        progress, 0);
+                if(progress == 0){
+                    btnSound.setImageResource(R.mipmap.btn_soundoff);
+                }else {
+                    btnSound.setImageResource(R.mipmap.btn_soundon);
+                }
+
+            }
+        });
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+            }
+        });
+
     }
 }

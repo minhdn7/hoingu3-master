@@ -162,9 +162,11 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     }
 
     public void checkVoice() {
-        if (AppDef.isVoice) {
+        if(!AppDef.isVoice){
             btnSound.setImageResource(R.mipmap.btn_soundoff);
-            mPlayer.stop();
+            if(mPlayer.isPlaying()){
+                mPlayer.stop();
+            }
         } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
             mPlayer = MediaPlayer.create(this, R.raw.succe_2);
