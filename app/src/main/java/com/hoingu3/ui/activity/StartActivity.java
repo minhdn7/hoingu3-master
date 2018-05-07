@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.android.mkit.hoingu3.R;
+import com.hoingu3.app.utils.AppDef;
 import com.hoingu3.domain.model.GetServiceResponse;
 import com.hoingu3.ui.presenter.CheckServicePresenter;
 import com.hoingu3.ui.presenter.GetServicePresenter;
@@ -34,6 +35,7 @@ public class StartActivity extends BaseActivity implements CheckServiceView, Get
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        AppDef.DEVICE_ID = deviceId;
         initView();
     }
 

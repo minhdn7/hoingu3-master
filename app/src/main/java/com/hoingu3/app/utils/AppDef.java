@@ -8,4 +8,5 @@ public class AppDef {
     public static Integer Score = 0;
     public static Boolean isVoice = true;
     public static List<Integer> listPlayId = new ArrayList<>();
+    public static String DEVICE_ID = "";
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.mkit.hoingu3.R;
 import com.google.android.gms.ads.AdRequest;
@@ -53,11 +54,18 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     }
 
     private void initAdsReward() {
-//        MobileAds.initialize(this, ADS_REWARD);
+
+        MobileAds.initialize(this, ADS_REWARD);
+
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
+        mRewardedVideoAd.loadAd(ADS_REWARD,
+                new AdRequest.Builder()
+                        .build());
+
 
     }
+
 
     private void addSounds() {
         mPlayer = MediaPlayer.create(this, R.raw.succe_2);
@@ -76,7 +84,6 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_add_lifesaver:
-                mRewardedVideoAd.loadAd(ADS_REWARD, new AdRequest.Builder().build());
                 if (mRewardedVideoAd.isLoaded()) {
                     mRewardedVideoAd.show();
                 }
@@ -138,8 +145,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     }
 
     @Override
-    public void onRewarded(RewardItem rewardItem) {
-
+    public void onRewarded(RewardItem reward) {
+        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+                reward.getAmount(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -170,7 +178,6 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
         } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
             mPlayer = MediaPlayer.create(this, R.raw.succe_2);
-            mPlayer.setLooping(true);
             mPlayer.start();
         }
     }
