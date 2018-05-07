@@ -21,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.mkit.hoingu3.R;
+import com.google.android.gms.ads.AdListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +73,42 @@ public class HomeActivity extends BaseActivity {
                 dilogSetting();
                 break;
             case R.id.btn_rank:
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            // Code to be executed when an ad finishes loading.
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            // Code to be executed when an ad request fails.
+                            startActivity(new Intent(HomeActivity.this, PlayActivity.class));
+                            finish();
+                        }
+
+                        @Override
+                        public void onAdOpened() {
+                            // Code to be executed when the ad is displayed.
+                        }
+
+                        @Override
+                        public void onAdLeftApplication() {
+                            // Code to be executed when the user has left the app.
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            // Code to be executed when when the interstitial ad is closed.
+                            startActivity(new Intent( HomeActivity.this, PlayActivity.class));
+                            finish();
+                        }
+                    });
+                } else {
+                    startActivity(new Intent(this, PlayActivity.class));
+                    this.finish();
+                }
                 break;
             case R.id.btn_moregame:
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));

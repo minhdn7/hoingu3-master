@@ -2,7 +2,9 @@
     <string name="app_name">Hoi Ngu 3</string>
     <string name="str_vui_long_doi">Vui lòng đợi...</string>
     <string name="str_oke">Ok</string>
+    <string name="str_cancel">Hủy</string>
     <string name="str_thong_bao">Thông báo</string>
+    <string name="str_thong_bao_exit">Bạn có chắc chắn muốn thoát game không?</string>
     <string name="tiepTuc">Tiếp tục</string>
     <string name="str_choi_ngay">Chơi ngay</string>
 </resources>

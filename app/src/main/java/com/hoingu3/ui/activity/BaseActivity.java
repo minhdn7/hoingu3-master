@@ -438,5 +438,18 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
     }
 
 
-
+    public void dialogExit(){
+//        MaterialDialog dialog = new MaterialDialog.Builder(this).title(R.string.str_thong_bao)
+//                .content(getResources().getString(R.string.str_thong_bao_exit))
+//                .positiveText(R.string.str_oke)
+//                .positiveText(R.string.str_cancel)
+//                .dismissListener(new DialogInterface.OnDismissListener() {
+//                    @Override public void onDismiss(DialogInterface dialogInterface) {
+//                        if (isFinish) {
+//                            finish();
+//                        }
+//                    }
+//                })
+//                .show();
+    }
 }

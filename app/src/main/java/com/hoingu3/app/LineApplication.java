@@ -14,7 +14,7 @@ public class LineApplication extends MultiDexApplication {
 
     @Getter
     private String baseUrl;
-    public static final String apiBaseUrl = "http://10.145.40.188:8888/";
+    public static final String apiBaseUrl = "http://112.213.94.52:8338/";
 
     private static GoogleAnalytics analytics;
     private static Tracker tracker;
