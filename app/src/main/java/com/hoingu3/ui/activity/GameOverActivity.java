@@ -79,8 +79,9 @@ public class GameOverActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
+//            super.onBackPressed();
+//            return;
+            dialogExit();
         }
 
         this.doubleBackToExitPressedOnce = true;

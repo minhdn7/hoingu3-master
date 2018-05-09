@@ -9,4 +9,6 @@ public class AppDef {
     public static Boolean isVoice = true;
     public static List<Integer> listPlayId = new ArrayList<>();
     public static String DEVICE_ID = "";
+    public static String IMAGE_AD = "";
+    public static String DOWNLOAD_AD = "";
 }

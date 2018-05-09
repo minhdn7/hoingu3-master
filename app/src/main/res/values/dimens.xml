@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fab_margin">16dp</dimen>
+
+
+    <!-- Dimens of View -->
+
+    <!--Textsize -->
+
+    <dimen name="padding">6dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="padding_12dp">12dp</dimen>
+    <dimen name="padding_20dp">20dp</dimen>
+    <dimen name="padding_32dp">32dp</dimen>
+    <dimen name="padding_48dp">48dp</dimen>
+    <dimen name="padding_52dp">52dp</dimen>
+    <dimen name="textSize">18sp</dimen>
+    <dimen name="textSize_16sp">16sp</dimen>
+    <dimen name="textSize_14sp">14sp</dimen>
+
+    <dimen name="image_h_w">20dp</dimen>
+    <dimen name="img_back">64dp</dimen>
+    <dimen name="elevation_button">5dp</dimen>
+
+    <dimen name="hight_banner">170dp</dimen>
+
+</resources>

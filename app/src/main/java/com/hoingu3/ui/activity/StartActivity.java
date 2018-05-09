@@ -67,11 +67,13 @@ public class StartActivity extends BaseActivity implements CheckServiceView, Get
     }
 
     @Override
-    public void onGetServiceSuccses(GetServiceResponse response) {
+    public void onGetServiceSuccses(final GetServiceResponse response) {
         hideProgressBar();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                AppDef.IMAGE_AD = response.getData().getItem().get(0).getAvatarFull();
+                AppDef.DOWNLOAD_AD = response.getData().getItem().get(0).getUrlDownload();
                 final Intent mainIntent = new Intent(StartActivity.this, HomeActivity.class);
                 StartActivity.this.startActivity(mainIntent);
                 StartActivity.this.finish();

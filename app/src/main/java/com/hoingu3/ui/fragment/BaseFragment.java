@@ -213,18 +213,13 @@ public class BaseFragment extends Fragment implements Validator.ValidationListen
         //
         TextView txtHeaderDialog = (TextView) dialogView.findViewById(R.id.txtHeaderDialog);
         TextView txtNoiDung = (TextView) dialogView.findViewById(R.id.txtNoiDung);
-        ImageView imgExit = (ImageView) dialogView.findViewById(R.id.imgExit);
+
         Button btnTiepTuc = (Button) dialogView.findViewById(R.id.btnTiepTuc);
 
         txtHeaderDialog.setText(title);
         txtNoiDung.setText(noiDung);
         btnTiepTuc.setText(sButtton);
-        imgExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                b.dismiss();
-            }
-        });
+
 
         btnTiepTuc.setOnClickListener(new View.OnClickListener() {
             @Override

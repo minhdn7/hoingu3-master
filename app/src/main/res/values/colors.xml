@@ -301,6 +301,81 @@
     <color name="md_blue_grey_800">#37474f</color>
     <color name="md_blue_grey_900">#263238</color>
 
+
+    // color vpoint
+    <!--<color name="colorPrimary">#753a87</color>-->
+    <!--<color name="colorPrimary">#003361</color>-->
+    <!--&lt;!&ndash;<color name="colorPrimaryDark">#4b357b</color>&ndash;&gt;-->
+    <!--<color name="colorPrimaryDark">#005590</color>-->
+    <!--<color name="colorAccent">#f26e21</color>-->
+
+    <color name="black_overlay">#66000000</color>
+
+    <!-- Screens background color-->
+    <color name="bg_screen1">#f64c74</color>
+    <color name="bg_screen2">#20d2cc</color>
+    <color name="bg_screen3">#4495ff</color>
+
+    <!-- dots inactive colors -->
+    <color name="pager_dark_screen1">#d1395c</color>
+    <color name="pager_dark_screen2">#14a895</color>
+    <color name="pager_dark_screen3">#3378d4</color>
+    <color name="pager_dark_screen4">#20d2cc</color>
+
+    <!-- dots active colors -->
+    <color name="pager_light_screen1">#f98da5</color>
+    <color name="pager_light_screen2">#8cf9eb</color>
+    <color name="pager_light_screen3">#93c6fd</color>
+    <color name="pager_light_screen4">#20d2cc</color>
+
+    <array name="array_pager_active">
+        <item>@color/pager_light_screen1</item>
+        <item>@color/pager_light_screen2</item>
+        <item>@color/pager_light_screen3</item>
+        <item>@color/pager_light_screen4</item>
+    </array>
+
+    <array name="array_pager_inactive">
+        <item>@color/pager_dark_screen1</item>
+        <item>@color/pager_dark_screen2</item>
+        <item>@color/pager_dark_screen3</item>
+        <item>@color/pager_dark_screen4</item>
+    </array>
+
+    <color name="bg_splash">#197af4</color>
+
+    <color name="tabMedium">#2B2B2B</color>
+    <color name="tabDark">#000000</color>
+    <color name="tabTransparent">#10ffffff</color>
+    <color name="theme_color_primary">#1c9359</color>
+    <color name="theme_color_primary_light">#3aaf75</color>
+    <color name="theme_color_accent">#084e43</color>
+    <color name="tab_border">#DCDCDC</color>
+    <color name="bg_detail">#f8f8f8</color>
+    <color name="tab_background">#f6f6f7</color>
+
+    <color name="textColorWhite">@android:color/background_light</color>
+    <color name="textColorRed">#F44336</color>
+    <color name="radioColor">#e75748</color>
+    <color name="radioColorOri">#f26f25</color>
+
+    <color name="color_chua_chon">#f26e21</color>
+    <color name="color_chon">#ff8741</color>
+
+
+    <color name="color_text_main_no">#666666</color>
+    <color name="color_text_main_yes">#344152</color>
+
+    <color name="color_violet">#a44d95</color>
+    <color name="color_violet_toolbar">#824497</color>
+
+    <!--color change v2-->
+    <color name="color_violet_v2">#843199</color>
+    <color name="color_origin_v2">#f26d20</color>
+    <color name="color_origin_01_v2">#e75a0a</color>
+    <color name="color_white_01_v2">#FFFFFF</color>
+    <color name="color_red">#AA0000</color>
+
     <color name="textColor">#7a7a7a</color>
     <color name="tab_indicator">#03A9F4</color>
     <color name="colorHint">#546E7A</color>

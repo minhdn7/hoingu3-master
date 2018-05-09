@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.mkit.hoingu3.R;
 import com.google.android.gms.ads.AdRequest;
@@ -69,8 +71,8 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
     public RewardedVideoAd mRewardedVideoAd;
     public String ADS_BANNER = "/21617015150/15656900/21701027765";
     public String ADS_INTER = "/21617015150/15656900/21701027999";
-//    public String ADS_REWARD = "/21617015150/15656900/21700816162";
-    public String ADS_REWARD = "ca-app-pub-3940256099942544/5224354917";
+    public String ADS_REWARD = "/21617015150/15656900/21700816162";
+//    public String ADS_REWARD = "ca-app-pub-3940256099942544/5224354917";
 //    public String ADS_REWARD = "ca-app-pub-7343050714013437/9093251656";
     private Toast toast;
     @Override
@@ -297,15 +299,23 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
     }
 
     public void showDialog(String contentDialog) {
-        MaterialDialog dialog = new MaterialDialog.Builder(this).title(R.string.str_thong_bao)
-                .content(contentDialog)
-                .positiveText(R.string.str_oke)
-                .dismissListener(new DialogInterface.OnDismissListener() {
-                    @Override public void onDismiss(DialogInterface dialogInterface) {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View deleteDialogView = factory.inflate(R.layout.custom_dialog_show_toast, null);
+        final android.app.AlertDialog yesDialog = new android.app.AlertDialog.Builder(this).create();
+        yesDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        yesDialog.setView(deleteDialogView);
+        TextView text = deleteDialogView.findViewById(R.id.text_message);
+        Typeface face = Typeface.createFromAsset(this.getAssets(), "fonts/SFUFuturaBook.TTF");
+        text.setTypeface(face);
+        text.setText(contentDialog);
+        deleteDialogView.findViewById(R.id.btnYes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                yesDialog.dismiss();
+            }
+        });
 
-                    }
-                })
-                .show();
+        yesDialog.show();
     }
 
     public void showDialog(String contentDialog, final boolean isFinish) {
@@ -355,18 +365,12 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
         //
         TextView txtHeaderDialog = (TextView) dialogView.findViewById(R.id.txtHeaderDialog);
         TextView txtNoiDung = (TextView) dialogView.findViewById(R.id.txtNoiDung);
-        ImageView imgExit = (ImageView) dialogView.findViewById(R.id.imgExit);
+
         Button btnTiepTuc = (Button) dialogView.findViewById(R.id.btnTiepTuc);
 
         txtHeaderDialog.setText(title);
         txtNoiDung.setText(noiDung);
         btnTiepTuc.setText(sButtton);
-        imgExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                b.dismiss();
-            }
-        });
 
         btnTiepTuc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -441,17 +445,28 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
 
 
     public void dialogExit(){
-//        MaterialDialog dialog = new MaterialDialog.Builder(this).title(R.string.str_thong_bao)
-//                .content(getResources().getString(R.string.str_thong_bao_exit))
-//                .positiveText(R.string.str_oke)
-//                .positiveText(R.string.str_cancel)
-//                .dismissListener(new DialogInterface.OnDismissListener() {
-//                    @Override public void onDismiss(DialogInterface dialogInterface) {
-//                        if (isFinish) {
-//                            finish();
-//                        }
-//                    }
-//                })
-//                .show();
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View deleteDialogView = factory.inflate(R.layout.custom_dialog_logout, null);
+        final android.app.AlertDialog yesDialog = new android.app.AlertDialog.Builder(this).create();
+        yesDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        yesDialog.setView(deleteDialogView);
+        TextView text = deleteDialogView.findViewById(R.id.text);
+        Typeface face = Typeface.createFromAsset(this.getAssets(), "fonts/SFUFuturaBook.TTF");
+        text.setTypeface(face);
+        deleteDialogView.findViewById(R.id.btnYes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        deleteDialogView.findViewById(R.id.btnNo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                yesDialog.dismiss();
+            }
+        });
+
+        yesDialog.show();
     }
 }

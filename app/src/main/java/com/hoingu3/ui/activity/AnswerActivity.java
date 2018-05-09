@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.mkit.hoingu3.R;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -85,7 +86,11 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
         switch (view.getId()) {
             case R.id.btn_add_lifesaver:
                 if (mRewardedVideoAd.isLoaded()) {
+                    showProgressBar();
                     mRewardedVideoAd.show();
+                }else {
+                    showDialog("Đừng nóng, phao đang trong quá trình vận chuyển, các hạ vui lòng ăn miếng bánh uống miếng nước cho hạ hỏa rồi thử lại nhé!"
+                            + "\n" + "Yêu thương:X");
                 }
                 break;
             case R.id.btn_next:
@@ -107,8 +112,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
+//            super.onBackPressed();
+//            return;
+            dialogExit();
         }
 
         this.doubleBackToExitPressedOnce = true;
@@ -135,19 +141,21 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
 
     @Override
     public void onRewardedVideoStarted() {
-
+        hideProgressBar();
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
+        hideProgressBar();
         startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
         this.finish();
     }
 
     @Override
     public void onRewarded(RewardItem reward) {
-        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
-                reward.getAmount(), Toast.LENGTH_SHORT).show();
+        hideProgressBar();
+//        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+//                reward.getAmount(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -157,7 +165,44 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
-        showToast("Loading video fail");
+        showToast("RewardVideo fail");
+        hideProgressBar();
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    // Code to be executed when an ad request fails.
+                    startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onAdOpened() {
+                    // Code to be executed when the ad is displayed.
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    // Code to be executed when the user has left the app.
+                }
+
+                @Override
+                public void onAdClosed() {
+                    // Code to be executed when when the interstitial ad is closed.
+                    if (AppDef.LifeScore < 5) {
+                        AppDef.LifeScore += 1;
+                    }
+                    startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
+                    finish();
+                }
+            });
+        }
     }
 
     @Override
