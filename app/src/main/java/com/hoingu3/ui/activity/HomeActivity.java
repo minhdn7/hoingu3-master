@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.android.mkit.hoingu3.R;
 import com.google.android.gms.ads.AdListener;
+import com.hoingu3.app.utils.AppDef;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -123,9 +124,11 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-//            super.onBackPressed();
-//            return;
-            dialogExit();
+            if(isConnectedNetwork()){
+                dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
+            }else {
+                dialogExit();
+            }
         }
 
         this.doubleBackToExitPressedOnce = true;

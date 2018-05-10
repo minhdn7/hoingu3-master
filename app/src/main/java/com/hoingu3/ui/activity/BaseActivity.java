@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.LayoutRes;
@@ -44,6 +45,7 @@ import com.hoingu3.domain.repository.TinyDB;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -468,5 +470,57 @@ public class BaseActivity extends AppCompatActivity implements Validator.Validat
         });
 
         yesDialog.show();
+    }
+
+    public void dialogAdExit(String urlImage, final String urlConnect){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_ad_exit, null);
+        dialogBuilder.setView(dialogView);
+
+        final AlertDialog b = dialogBuilder.create();
+        b.setCanceledOnTouchOutside(false);
+        b.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        b.show();
+        // set width
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(b.getWindow().getAttributes());
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        lp.width = width;
+        lp.height = height;
+        lp.gravity = Gravity.CENTER;
+        b.getWindow().setAttributes(lp);
+        //
+        ImageView img_ad_request = (ImageView) dialogView.findViewById(R.id.img_ad_request);
+        ImageView img_ad_exit = (ImageView) dialogView.findViewById(R.id.img_ad_exit);
+
+        if(!urlImage.trim().equals("")){
+            Picasso.get()
+                    .load(urlImage)
+                    .into(img_ad_request);
+        }
+
+        img_ad_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                b.dismiss();
+                dialogExit();
+            }
+        });
+
+        img_ad_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(urlConnect));
+                startActivity(i);
+            }
+        });
+
+
+
     }
 }

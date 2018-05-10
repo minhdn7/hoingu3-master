@@ -79,9 +79,11 @@ public class GameOverActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-//            super.onBackPressed();
-//            return;
-            dialogExit();
+            if(isConnectedNetwork()){
+                dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
+            }else {
+                dialogExit();
+            }
         }
 
         this.doubleBackToExitPressedOnce = true;

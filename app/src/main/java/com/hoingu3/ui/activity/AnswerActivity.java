@@ -112,9 +112,12 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-//            super.onBackPressed();
-//            return;
-            dialogExit();
+            if(isConnectedNetwork()){
+                dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
+            }else {
+                dialogExit();
+            }
+
         }
 
         this.doubleBackToExitPressedOnce = true;
