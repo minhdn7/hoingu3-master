@@ -75,7 +75,7 @@ public class PlayActivity extends BaseActivity {
     }
 
     private void addSounds(){
-        mPlayer = MediaPlayer.create(this, R.raw.trong_com);
+        mPlayer = MediaPlayer.create(this, R.raw.trong_com_2);
         mPlayer.setLooping(true);
         mPlayer.start();
     }
@@ -226,7 +226,7 @@ public class PlayActivity extends BaseActivity {
             }
         }else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
-            mPlayer = MediaPlayer.create(this, R.raw.trong_com);
+            mPlayer = MediaPlayer.create(this, R.raw.trong_com_2);
             mPlayer.setLooping(true);
             mPlayer.start();
         }

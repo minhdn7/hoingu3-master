@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.android.mkit.hoingu3.R;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hoingu3.app.utils.AppDef;
 import com.hoingu3.domain.model.GetServiceResponse;
 import com.hoingu3.ui.presenter.CheckServicePresenter;
@@ -34,6 +36,7 @@ public class StartActivity extends BaseActivity implements CheckServiceView, Get
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        FirebaseMessaging.getInstance().subscribeToTopic("HoiNgu3");
         deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         AppDef.DEVICE_ID = deviceId;
         initView();

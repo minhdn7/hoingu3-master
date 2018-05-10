@@ -11,4 +11,5 @@ public class AppDef {
     public static String DEVICE_ID = "";
     public static String IMAGE_AD = "";
     public static String DOWNLOAD_AD = "";
+    public static String TOKEN_FIREBASE = "TOKEN_FIREBASE";
 }

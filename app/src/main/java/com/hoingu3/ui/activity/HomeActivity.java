@@ -57,7 +57,8 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void addSounds(){
-         mPlayer = MediaPlayer.create(this, R.raw.trong_com);
+         mPlayer = MediaPlayer.create(this, R.raw.trong_com_2);
+        mPlayer.setLooping(true);
         mPlayer.start();
     }
 
