@@ -29,14 +29,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage == null) return;
-        else {
-            try {
-
-
-            } catch (Exception e){
-                Log.e("Parse error: ", e.toString());
-            }
-        }
         //Displaying data in log
         //It is optional
         Log.d(TAG, "From: " + remoteMessage.getFrom());

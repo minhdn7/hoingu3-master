@@ -43,6 +43,7 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     AdView adView;
     private String sGiaiThich = "";
     private MediaPlayer mPlayer;
+    private boolean isLoadReward = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,44 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
                 if (mRewardedVideoAd.isLoaded()) {
                     showProgressBar();
                     mRewardedVideoAd.show();
-                }else {
+                } else if(!isLoadReward){
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
+                        mInterstitialAd.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                // Code to be executed when an ad finishes loading.
+                            }
+
+                            @Override
+                            public void onAdFailedToLoad(int errorCode) {
+                                // Code to be executed when an ad request fails.
+                                startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
+                                finish();
+                            }
+
+                            @Override
+                            public void onAdOpened() {
+                                // Code to be executed when the ad is displayed.
+                            }
+
+                            @Override
+                            public void onAdLeftApplication() {
+                                // Code to be executed when the user has left the app.
+                            }
+
+                            @Override
+                            public void onAdClosed() {
+                                // Code to be executed when when the interstitial ad is closed.
+                                if (AppDef.LifeScore < 5) {
+                                    AppDef.LifeScore += 1;
+                                }
+                                startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
+                                finish();
+                            }
+                        });
+                    }
+                } else {
                     showDialog("Đừng nóng, phao đang trong quá trình vận chuyển, các hạ vui lòng ăn miếng bánh uống miếng nước cho hạ hỏa rồi thử lại nhé!"
                             + "\n" + "Yêu thương:X");
                 }
@@ -134,7 +172,7 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
 
     @Override
     public void onRewardedVideoAdLoaded() {
-
+        isLoadReward = true;
     }
 
     @Override
@@ -168,44 +206,10 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
-        showToast("RewardVideo fail");
+//        showToast("RewardVideo fail");
+        isLoadReward = false;
         hideProgressBar();
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-            mInterstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    // Code to be executed when an ad finishes loading.
-                }
 
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    // Code to be executed when an ad request fails.
-                    startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
-                    finish();
-                }
-
-                @Override
-                public void onAdOpened() {
-                    // Code to be executed when the ad is displayed.
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    // Code to be executed when the user has left the app.
-                }
-
-                @Override
-                public void onAdClosed() {
-                    // Code to be executed when when the interstitial ad is closed.
-                    if (AppDef.LifeScore < 5) {
-                        AppDef.LifeScore += 1;
-                    }
-                    startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
-                    finish();
-                }
-            });
-        }
     }
 
     @Override
