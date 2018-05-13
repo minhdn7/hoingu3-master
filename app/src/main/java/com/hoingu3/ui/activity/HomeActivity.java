@@ -113,10 +113,22 @@ public class HomeActivity extends BaseActivity {
                 }
                 break;
             case R.id.btn_moregame:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
+                if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
+                }else {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://112.213.94.52:8186/dl/moreapplives?source=app_code")));
+                }
+
                 break;
             case R.id.btn_exit:
-                this.finish();
+                if(mPlayer != null && mPlayer.isPlaying()){
+                    mPlayer.stop();
+                }
+                if(isConnectedNetwork()){
+                    dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
+                }else {
+                    dialogExit();
+                }
                 break;
         }
     }
@@ -125,6 +137,9 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
+            if(mPlayer != null && mPlayer.isPlaying()){
+                mPlayer.stop();
+            }
             if(isConnectedNetwork()){
                 dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
             }else {

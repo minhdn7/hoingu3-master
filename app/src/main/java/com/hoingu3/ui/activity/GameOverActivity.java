@@ -12,14 +12,18 @@ import android.widget.TextView;
 
 import com.android.mkit.hoingu3.R;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.hoingu3.app.utils.AppDef;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class GameOverActivity extends BaseActivity {
+public class GameOverActivity extends BaseActivity implements RewardedVideoAdListener {
 
     @BindView(R.id.view_top)
     RelativeLayout viewTop;
@@ -39,8 +43,9 @@ public class GameOverActivity extends BaseActivity {
     ImageView btnMoregame;
     @BindView(R.id.adView)
     AdView adView;
-
+    boolean doubleBackToExitPressedOnce = false;
     private MediaPlayer mPlayer;
+    private boolean isLoadReward = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +54,30 @@ public class GameOverActivity extends BaseActivity {
         ButterKnife.bind(this);
         addSounds();
         initView();
-        initControls();
+        initAdsReward();
     }
 
-    private void initControls() {
-        AppDef.LifeScore = 2;
+    private void resetLife() {
+        AppDef.LifeScore = 3;
         AppDef.Score = 0;
         if (AppDef.listPlayId.size() > 0) {
             AppDef.listPlayId.clear();
         }
     }
+
+    private void initAdsReward() {
+
+        MobileAds.initialize(this, ADS_REWARD);
+
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+        mRewardedVideoAd.loadAd(ADS_REWARD,
+                new AdRequest.Builder()
+                        .build());
+
+
+    }
+
 
     private void initView() {
         String sDiemCao = "Điểm cao: " + String.valueOf(AppDef.Score);
@@ -73,12 +92,62 @@ public class GameOverActivity extends BaseActivity {
     }
 
 
+    private void showAdReward(){
+        if (mRewardedVideoAd.isLoaded()) {
+            showProgressBar();
+            mRewardedVideoAd.show();
+        } else if(!isLoadReward){
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        // Code to be executed when an ad finishes loading.
+                    }
 
-    boolean doubleBackToExitPressedOnce = false;
+                    @Override
+                    public void onAdFailedToLoad(int errorCode) {
+                        // Code to be executed when an ad request fails.
+                        startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
+                        finish();
+                    }
+
+                    @Override
+                    public void onAdOpened() {
+                        // Code to be executed when the ad is displayed.
+                    }
+
+                    @Override
+                    public void onAdLeftApplication() {
+                        // Code to be executed when the user has left the app.
+                    }
+
+                    @Override
+                    public void onAdClosed() {
+                        // Code to be executed when when the interstitial ad is closed.
+                        if (AppDef.LifeScore < 5) {
+                            AppDef.LifeScore += 1;
+                        }
+                        startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
+                        finish();
+                    }
+                });
+            }
+        } else {
+            showDialog("Đừng nóng, phao đang trong quá trình vận chuyển, các hạ vui lòng ăn miếng bánh uống miếng nước cho hạ hỏa rồi thử lại nhé!"
+                    + "\n" + "Yêu thương:X");
+        }
+    }
+
+
+
 
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
+            if(mPlayer != null && mPlayer.isPlaying()){
+                mPlayer.stop();
+            }
             if(isConnectedNetwork()){
                 dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
             }else {
@@ -98,17 +167,29 @@ public class GameOverActivity extends BaseActivity {
         }, 2000);
     }
 
-    @OnClick({R.id.btn_moregame, R.id.btn_play_again, R.id.btn_sound})
+    @OnClick({R.id.btn_moregame, R.id.btn_play_again, R.id.btn_sound, R.id.btn_add_lifesaver})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_moregame:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
+                if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
+                }else {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://112.213.94.52:8186/dl/moreapplives?source=app_code")));
+                }
                 break;
             case R.id.btn_sound:
-                checkVoice();
                 AppDef.isVoice = !AppDef.isVoice;
+                if(!AppDef.isVoice){
+                    btnSound.setImageResource(R.mipmap.btn_soundoff);
+                    if(mPlayer.isPlaying()){
+                        mPlayer.stop();
+                    }
+                } else {
+                    btnSound.setImageResource(R.mipmap.btn_soundon);
+                }
                 break;
             case R.id.btn_play_again:
+                resetLife();
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                     mInterstitialAd.setAdListener(new AdListener() {
@@ -146,6 +227,9 @@ public class GameOverActivity extends BaseActivity {
                     this.finish();
                 }
                 break;
+            case R.id.btn_add_lifesaver:
+                showAdReward();
+                break;
         }
     }
 
@@ -153,14 +237,60 @@ public class GameOverActivity extends BaseActivity {
     public void checkVoice() {
         if(!AppDef.isVoice){
             btnSound.setImageResource(R.mipmap.btn_soundoff);
-            if(mPlayer.isPlaying()){
+            if(mPlayer != null && mPlayer.isPlaying()){
                 mPlayer.stop();
             }
         } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
             mPlayer = MediaPlayer.create(this, R.raw.an_ui);
-            mPlayer.setLooping(true);
             mPlayer.start();
         }
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        isLoadReward = true;
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+        hideProgressBar();
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        hideProgressBar();
+        startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
+        this.finish();
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+        hideProgressBar();
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+        isLoadReward = false;
+        hideProgressBar();
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+        if (AppDef.LifeScore < 5) {
+            AppDef.LifeScore += 1;
+        }
+        startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
+        this.finish();
     }
 }

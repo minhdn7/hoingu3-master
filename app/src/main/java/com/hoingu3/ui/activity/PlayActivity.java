@@ -7,12 +7,15 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.mkit.hoingu3.R;
 import com.hoingu3.app.utils.AppDef;
@@ -24,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PlayActivity extends BaseActivity {
+public class PlayActivity extends BaseActivity implements Animation.AnimationListener {
 
     @BindView(R.id.tv_question)
     TextView tvQuestion;
@@ -46,7 +49,10 @@ public class PlayActivity extends BaseActivity {
     RelativeLayout viewQuestion;
     @BindView(R.id.tv_life)
     TextView tvLife;
-    @BindView(R.id.btn_sound) ImageView btnSound;
+    @BindView(R.id.btn_sound)
+    ImageView btnSound;
+    @BindView(R.id.ln_life)
+    LinearLayout lnLife;
 
     private String sCorrectValue = "";
     private String gtA = "";
@@ -58,7 +64,10 @@ public class PlayActivity extends BaseActivity {
     private Integer maxId = 353;
     private Boolean isPlay = true;
     private MediaPlayer mPlayer;
-    private int random  = 1;
+    private int random = 1;
+
+    Animation animFadein, animBlink, animZoomIn, animZoomOut;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +76,26 @@ public class PlayActivity extends BaseActivity {
         initView();
         do {
             random = new Random().nextInt(maxId - minId + 1) + minId;
-        } while (checkIdQuestion(random));
+        } while (!checkIdQuestion(random));
 
         getData(random);
         checkVoice();
+        addAnim();
 //        addSounds();
     }
 
-    private void addSounds(){
+    private void addAnim() {
+        // load the animation
+        animFadein = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        animBlink = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink_not_repeat);
+        animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
+        animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_out);
+        // set animation listener
+        animFadein.setAnimationListener(this);
+        animBlink.setAnimationListener(this);
+    }
+
+    private void addSounds() {
         mPlayer = MediaPlayer.create(this, R.raw.trong_com_2);
         mPlayer.setLooping(true);
         mPlayer.start();
@@ -92,7 +113,6 @@ public class PlayActivity extends BaseActivity {
         btAnsC.setTypeface(face2);
         btAnsD.setTypeface(face2);
     }
-
 
 
     public void getData(Integer id) {
@@ -131,77 +151,89 @@ public class PlayActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.bt_ans_a:
                 btAnsA.setBackgroundDrawable(getResources().getDrawable(R.mipmap.btn_answer_2));
-                checkAnswer("a", gtA);
+                checkAnswer("a", gtA, btAnsA);
                 break;
             case R.id.bt_ans_b:
                 btAnsB.setBackgroundDrawable(getResources().getDrawable(R.mipmap.btn_answer_2));
-                checkAnswer("b", gtB);
+                checkAnswer("b", gtB, btAnsB);
                 break;
             case R.id.bt_ans_c:
                 btAnsC.setBackgroundDrawable(getResources().getDrawable(R.mipmap.btn_answer_2));
-                checkAnswer("c", gtC);
+                checkAnswer("c", gtC, btAnsC);
                 break;
             case R.id.bt_ans_d:
                 btAnsD.setBackgroundDrawable(getResources().getDrawable(R.mipmap.btn_answer_2));
-                checkAnswer("d", gtD);
+                checkAnswer("d", gtD, btAnsD);
                 break;
             case R.id.btn_sound:
-                checkVoice();
                 AppDef.isVoice = !AppDef.isVoice;
+                if (!AppDef.isVoice) {
+                    btnSound.setImageResource(R.mipmap.btn_soundoff);
+                } else {
+                    btnSound.setImageResource(R.mipmap.btn_soundon);
+                }
                 break;
             case R.id.btn_moregame:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
+                if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
+                }else {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://112.213.94.52:8186/dl/moreapplives?source=app_code")));
+                }
                 break;
         }
     }
 
-    public void checkAnswer(String response, String giaiThich) {
-        MediaPlayer mPlayer2 = MediaPlayer.create(this, R.raw.correct);
-        mPlayer2.start();
-        mPlayer.stop();
+    public void checkAnswer(String response, String giaiThich, Button btnAnswer) {
         if (!response.toLowerCase().equals(sCorrectValue)) {
+            if (AppDef.isVoice) {
+                mPlayer = MediaPlayer.create(this, R.raw.uh_oh);
+                mPlayer.start();
+            }
             AppDef.LifeScore -= 1;
             tvLife.setText(String.valueOf(AppDef.LifeScore));
-        }else {
+            lnLife.startAnimation(animBlink);
+
+        } else {
             AppDef.Score += 1;
-        }
-
-        if(AppDef.LifeScore <= 0){
-
-            startActivity(new Intent(this, GameOverActivity.class));
-            this.finish();
-        }else {
             Intent intent = new Intent(PlayActivity.this, AnswerActivity.class);
             intent.putExtra("GIAI_THICH", giaiThich);
             startActivity(intent);
             this.finish();
 
         }
-        this.finish();
+        if (AppDef.LifeScore <= 0) {
+            startActivity(new Intent(this, GameOverActivity.class));
+            this.finish();
+        }
+
     }
 
-    public boolean checkIdQuestion(Integer id){
-        if(AppDef.listPlayId.size() > 0){
-            for(int i = 0; i < AppDef.listPlayId.size(); i++){
-                if(AppDef.listPlayId.get(i).equals(id)){
+    public boolean checkIdQuestion(Integer id) {
+        if (AppDef.listPlayId.size() > 0) {
+            for (int i = 0; i < AppDef.listPlayId.size(); i++) {
+                if (AppDef.listPlayId.get(i).equals(id)) {
                     return false;
                 }
             }
             AppDef.listPlayId.add(id);
             return true;
-        }else {
+        } else {
             AppDef.listPlayId.add(id);
             return true;
         }
     }
 
     boolean doubleBackToExitPressedOnce = false;
+
     @Override
     public void onBackPressed() {
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
         if (doubleBackToExitPressedOnce) {
-            if(isConnectedNetwork()){
+            if (isConnectedNetwork()) {
                 dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
-            }else {
+            } else {
                 dialogExit();
             }
         }
@@ -209,27 +241,38 @@ public class PlayActivity extends BaseActivity {
         this.doubleBackToExitPressedOnce = true;
         showToast("Nhấn 2 lần để thoát");
 
-        new android.os.Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
 
-    public void checkVoice(){
-        if(!AppDef.isVoice){
+    public void checkVoice() {
+        if (!AppDef.isVoice) {
             btnSound.setImageResource(R.mipmap.btn_soundoff);
-            if(mPlayer.isPlaying()){
+            if (mPlayer != null && mPlayer.isPlaying()) {
                 mPlayer.stop();
             }
-        }else {
+        } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
-            mPlayer = MediaPlayer.create(this, R.raw.trong_com_2);
-            mPlayer.setLooping(true);
-            mPlayer.start();
         }
     }
 
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
 }

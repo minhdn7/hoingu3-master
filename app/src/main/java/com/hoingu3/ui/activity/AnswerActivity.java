@@ -136,7 +136,11 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
                 this.finish();
                 break;
             case R.id.btn_moregame:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.hippoGammes.SatanChristmas")));
+                if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
+                }else {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://112.213.94.52:8186/dl/moreapplives?source=app_code")));
+                }
                 break;
             case R.id.btn_sound:
                 checkVoice();
@@ -150,6 +154,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
+            if(mPlayer != null && mPlayer.isPlaying()){
+                mPlayer.stop();
+            }
             if(isConnectedNetwork()){
                 dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
             }else {
@@ -224,7 +231,7 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     public void checkVoice() {
         if(!AppDef.isVoice){
             btnSound.setImageResource(R.mipmap.btn_soundoff);
-            if(mPlayer.isPlaying()){
+            if(mPlayer != null && mPlayer.isPlaying()){
                 mPlayer.stop();
             }
         } else {

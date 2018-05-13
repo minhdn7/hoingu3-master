@@ -77,6 +77,7 @@ public class StartActivity extends BaseActivity implements CheckServiceView, Get
             public void run() {
                 AppDef.IMAGE_AD = response.getData().getItem().get(0).getAvatarFull();
                 AppDef.DOWNLOAD_AD = response.getData().getItem().get(0).getUrlDownload();
+//                AppDef.MORE_GAME = response.getData().getItem().get(0).getAppName();
                 final Intent mainIntent = new Intent(StartActivity.this, HomeActivity.class);
                 StartActivity.this.startActivity(mainIntent);
                 StartActivity.this.finish();
