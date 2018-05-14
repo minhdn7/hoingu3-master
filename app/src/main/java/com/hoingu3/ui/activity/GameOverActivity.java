@@ -293,4 +293,12 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
         startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
         this.finish();
     }
+
+    @Override
+    public void onStop() {
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
+        super.onStop();
+    }
 }

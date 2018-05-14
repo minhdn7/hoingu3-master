@@ -53,7 +53,6 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-        addSounds();
     }
 
     private void addSounds(){
@@ -213,5 +212,20 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    @Override
+    public void onStop() {
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        addSounds();
+        super.onStart();
     }
 }

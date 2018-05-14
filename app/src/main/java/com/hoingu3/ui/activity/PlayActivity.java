@@ -275,4 +275,14 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
     public void onAnimationRepeat(Animation animation) {
 
     }
+
+
+
+    @Override
+    public void onStop() {
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
+        super.onStop();
+    }
 }

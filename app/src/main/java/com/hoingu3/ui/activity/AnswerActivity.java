@@ -241,4 +241,16 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
         }
     }
 
+    @Override
+    public void onStop() {
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 }
