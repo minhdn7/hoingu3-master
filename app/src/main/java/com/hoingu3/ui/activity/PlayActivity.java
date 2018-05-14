@@ -21,6 +21,7 @@ import com.android.mkit.hoingu3.R;
 import com.hoingu3.app.utils.AppDef;
 import com.hoingu3.ui.adapter.MyDatabaseAdapter;
 
+import java.io.IOException;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -81,7 +82,7 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
         getData(random);
         checkVoice();
         addAnim();
-//        addSounds();
+        addSounds();
     }
 
     private void addAnim() {
@@ -96,9 +97,10 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
     }
 
     private void addSounds() {
-        mPlayer = MediaPlayer.create(this, R.raw.trong_com_2);
-        mPlayer.setLooping(true);
-        mPlayer.start();
+        if(mPlayer == null) {
+            mPlayer = MediaPlayer.create(this, R.raw.uh_oh);
+        }
+
     }
 
     private void initView() {
@@ -186,7 +188,9 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
     public void checkAnswer(String response, String giaiThich, Button btnAnswer) {
         if (!response.toLowerCase().equals(sCorrectValue)) {
             if (AppDef.isVoice) {
-                mPlayer = MediaPlayer.create(this, R.raw.uh_oh);
+                if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.pause();
+                }
                 mPlayer.start();
             }
             AppDef.LifeScore -= 1;
@@ -284,5 +288,12 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
             mPlayer.stop();
         }
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPlayer.stop();
+        mPlayer.release();
     }
 }
