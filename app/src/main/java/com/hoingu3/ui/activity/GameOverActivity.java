@@ -46,15 +46,17 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
     boolean doubleBackToExitPressedOnce = false;
     private MediaPlayer mPlayer;
     private boolean isLoadReward = false;
+    private Boolean isPrepare = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
         ButterKnife.bind(this);
-        addSounds();
         initView();
         initAdsReward();
+        addSounds();
+        checkVoice();
     }
 
     private void resetLife() {
@@ -88,7 +90,13 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
 
     private void addSounds() {
         mPlayer = MediaPlayer.create(this, R.raw.an_ui);
-        checkVoice();
+        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                isPrepare = true;
+            }
+        });
+
     }
 
 
@@ -108,6 +116,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                     @Override
                     public void onAdFailedToLoad(int errorCode) {
                         // Code to be executed when an ad request fails.
+                        if(mPlayer != null && mPlayer.isPlaying()) {
+                            mPlayer.stop();
+                        }
                         startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                         finish();
                     }
@@ -127,6 +138,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                         // Code to be executed when when the interstitial ad is closed.
                         if (AppDef.LifeScore < 5) {
                             AppDef.LifeScore += 1;
+                        }
+                        if(mPlayer != null && mPlayer.isPlaying()) {
+                            mPlayer.stop();
                         }
                         startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                         finish();
@@ -171,6 +185,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_moregame:
+                if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.stop();
+                }
                 if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
                 }else {
@@ -201,6 +218,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                         @Override
                         public void onAdFailedToLoad(int errorCode) {
                             // Code to be executed when an ad request fails.
+                            if(mPlayer != null && mPlayer.isPlaying()) {
+                                mPlayer.stop();
+                            }
                             startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                             finish();
                         }
@@ -218,11 +238,17 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                         @Override
                         public void onAdClosed() {
                             // Code to be executed when when the interstitial ad is closed.
+                            if(mPlayer != null && mPlayer.isPlaying()) {
+                                mPlayer.stop();
+                            }
                             startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                             finish();
                         }
                     });
                 } else {
+                    if(mPlayer != null && mPlayer.isPlaying()) {
+                        mPlayer.stop();
+                    }
                     startActivity(new Intent(this, PlayActivity.class));
                     this.finish();
                 }
@@ -242,8 +268,15 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
             }
         } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
-            mPlayer = MediaPlayer.create(this, R.raw.an_ui);
-            mPlayer.start();
+            if (mPlayer != null && mPlayer.isPlaying()) {
+                mPlayer.stop();
+            }
+            if(isPrepare){
+                mPlayer.start();
+            }else {
+                addSounds();
+                mPlayer.start();
+            }
         }
     }
 
@@ -265,6 +298,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
     @Override
     public void onRewardedVideoAdClosed() {
         hideProgressBar();
+        if(mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
         startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
         this.finish();
     }
@@ -289,6 +325,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
     public void onRewardedVideoCompleted() {
         if (AppDef.LifeScore < 5) {
             AppDef.LifeScore += 1;
+        }
+        if(mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
         }
         startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
         this.finish();

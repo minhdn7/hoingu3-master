@@ -66,8 +66,10 @@ public class HomeActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_play_now:
+                if(mPlayer != null && mPlayer.isPlaying()){
+                    mPlayer.stop();
+                }
                 startActivity(new Intent(this, PlayActivity.class));
-                mPlayer.stop();
                 this.finish();
                 break;
             case R.id.btn_setting:
@@ -85,6 +87,9 @@ public class HomeActivity extends BaseActivity {
                         @Override
                         public void onAdFailedToLoad(int errorCode) {
                             // Code to be executed when an ad request fails.
+                            if(mPlayer != null && mPlayer.isPlaying()){
+                                mPlayer.stop();
+                            }
                             startActivity(new Intent(HomeActivity.this, PlayActivity.class));
                             finish();
                         }
@@ -102,16 +107,25 @@ public class HomeActivity extends BaseActivity {
                         @Override
                         public void onAdClosed() {
                             // Code to be executed when when the interstitial ad is closed.
+                            if(mPlayer != null && mPlayer.isPlaying()){
+                                mPlayer.stop();
+                            }
                             startActivity(new Intent( HomeActivity.this, PlayActivity.class));
                             finish();
                         }
                     });
                 } else {
+                    if(mPlayer != null && mPlayer.isPlaying()){
+                        mPlayer.stop();
+                    }
                     startActivity(new Intent(this, PlayActivity.class));
                     this.finish();
                 }
                 break;
             case R.id.btn_moregame:
+                if(mPlayer != null && mPlayer.isPlaying()){
+                    mPlayer.stop();
+                }
                 if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
                 }else {

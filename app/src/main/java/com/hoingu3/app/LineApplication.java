@@ -35,14 +35,14 @@ public class LineApplication extends MultiDexApplication {
         analytics = GoogleAnalytics.getInstance(this);
 
         // TODO: Replace the tracker-id with your app one from https://www.google.com/analytics/web/
-        tracker = analytics.newTracker("UA-107206025-1");
+//        tracker = analytics.newTracker("UA-107206025-1");
 
         // Provide unhandled exceptions reports. Do that first after creating the tracker
-        tracker.enableExceptionReporting(true);
-        tracker.enableAdvertisingIdCollection(true);
-
-        // Enable automatic activity tracking for your app
-        tracker.enableAutoActivityTracking(true);
+//        tracker.enableExceptionReporting(true);
+//        tracker.enableAdvertisingIdCollection(true);
+//
+//        // Enable automatic activity tracking for your app
+//        tracker.enableAutoActivityTracking(true);
 
         // dagger
         objectGraph = ObjectGraph.create(new AppModule(this));

@@ -78,7 +78,7 @@
                     android:gravity="center"
                     android:padding="@dimen/_16sdp"
                     android:textStyle="bold"
-                    android:text="Đáp án nào không giống đá án A nhất"/>
+                    android:text="Đáp án nào giống đáp án A nhất"/>
 
                 <ImageView
                     android:id="@+id/ic_show"

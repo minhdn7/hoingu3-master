@@ -55,7 +55,7 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
     @BindView(R.id.ln_life)
     LinearLayout lnLife;
 
-    private String sCorrectValue = "";
+    private String sCorrectValue = "a";
     private String gtA = "";
     private String gtB = "";
     private String gtC = "";
@@ -63,7 +63,7 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
 
     private Integer minId = 1;
     private Integer maxId = 353;
-    private Boolean isPlay = true;
+    private Boolean isPrepare = false;
     private MediaPlayer mPlayer;
     private int random = 1;
 
@@ -99,9 +99,15 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
     private void addSounds() {
         if(mPlayer == null) {
             mPlayer = MediaPlayer.create(this, R.raw.uh_oh);
+            mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    isPrepare = true;
+                }
+            });
 //            mPlayer.setDataSource(url);
-            mPlayer.setOnPreparedListener(this);
-            mPlayer.prepareAsync();
+//            mPlayer.setOnPreparedListener(this);
+//            mPlayer.prepareAsync();
         }
 
     }
@@ -179,6 +185,9 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
                 }
                 break;
             case R.id.btn_moregame:
+                if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.stop();
+                }
                 if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
                 }else {
@@ -195,13 +204,22 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
                     mPlayer.stop();
                     mPlayer.seekTo(0);
                 }
-                mPlayer.start();
+                if(isPrepare){
+                    mPlayer.start();
+                }else {
+                    addSounds();
+                    mPlayer.start();
+                }
+
             }
             AppDef.LifeScore -= 1;
             tvLife.setText(String.valueOf(AppDef.LifeScore));
             lnLife.startAnimation(animBlink);
 
         } else {
+            if(mPlayer != null && mPlayer.isPlaying()) {
+                mPlayer.stop();
+            }
             AppDef.Score += 1;
             Intent intent = new Intent(PlayActivity.this, AnswerActivity.class);
             intent.putExtra("GIAI_THICH", giaiThich);
@@ -210,6 +228,9 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
 
         }
         if (AppDef.LifeScore <= 0) {
+            if(mPlayer != null && mPlayer.isPlaying()) {
+                mPlayer.stop();
+            }
             startActivity(new Intent(this, GameOverActivity.class));
             this.finish();
         }

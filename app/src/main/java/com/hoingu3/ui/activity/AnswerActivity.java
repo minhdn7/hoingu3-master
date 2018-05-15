@@ -44,6 +44,7 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     private String sGiaiThich = "";
     private MediaPlayer mPlayer;
     private boolean isLoadReward = false;
+    private Boolean isPrepare = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
         ButterKnife.bind(this);
         initView();
         addSounds();
+        checkVoice();
         initAdsReward();
     }
 
@@ -71,7 +73,13 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
 
     private void addSounds() {
         mPlayer = MediaPlayer.create(this, R.raw.succe_2);
-        checkVoice();
+        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                isPrepare = true;
+            }
+        });
+
     }
 
     private void initView() {
@@ -101,6 +109,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
                             @Override
                             public void onAdFailedToLoad(int errorCode) {
                                 // Code to be executed when an ad request fails.
+                                if(mPlayer != null && mPlayer.isPlaying()) {
+                                    mPlayer.stop();
+                                }
                                 startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
                                 finish();
                             }
@@ -121,6 +132,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
                                 if (AppDef.LifeScore < 5) {
                                     AppDef.LifeScore += 1;
                                 }
+                                if(mPlayer != null && mPlayer.isPlaying()) {
+                                    mPlayer.stop();
+                                }
                                 startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
                                 finish();
                             }
@@ -132,10 +146,16 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
                 }
                 break;
             case R.id.btn_next:
+                if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.stop();
+                }
                 startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
                 this.finish();
                 break;
             case R.id.btn_moregame:
+                if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.stop();
+                }
                 if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
                 }else {
@@ -195,6 +215,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     @Override
     public void onRewardedVideoAdClosed() {
         hideProgressBar();
+        if(mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
         startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
         this.finish();
     }
@@ -224,6 +247,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
         if (AppDef.LifeScore < 5) {
             AppDef.LifeScore += 1;
         }
+        if(mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
         startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
         this.finish();
     }
@@ -236,8 +262,15 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
             }
         } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
-            mPlayer = MediaPlayer.create(this, R.raw.succe_2);
-            mPlayer.start();
+            if (mPlayer != null && mPlayer.isPlaying()) {
+                mPlayer.stop();
+            }
+            if(isPrepare){
+                mPlayer.start();
+            }else {
+                addSounds();
+                mPlayer.start();
+            }
         }
     }
 
