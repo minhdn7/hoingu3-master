@@ -28,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PlayActivity extends BaseActivity implements Animation.AnimationListener {
+public class PlayActivity extends BaseActivity implements Animation.AnimationListener, MediaPlayer.OnPreparedListener {
 
     @BindView(R.id.tv_question)
     TextView tvQuestion;
@@ -99,6 +99,9 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
     private void addSounds() {
         if(mPlayer == null) {
             mPlayer = MediaPlayer.create(this, R.raw.uh_oh);
+//            mPlayer.setDataSource(url);
+            mPlayer.setOnPreparedListener(this);
+            mPlayer.prepareAsync();
         }
 
     }
@@ -189,7 +192,8 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
         if (!response.toLowerCase().equals(sCorrectValue)) {
             if (AppDef.isVoice) {
                 if(mPlayer != null && mPlayer.isPlaying()) {
-                    mPlayer.pause();
+                    mPlayer.stop();
+                    mPlayer.seekTo(0);
                 }
                 mPlayer.start();
             }
@@ -295,5 +299,10 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
         super.onDestroy();
         mPlayer.stop();
         mPlayer.release();
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+
     }
 }
