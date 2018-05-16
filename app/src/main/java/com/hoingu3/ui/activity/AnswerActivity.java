@@ -133,7 +133,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
                                     AppDef.LifeScore += 1;
                                 }
                                 if(mPlayer != null && mPlayer.isPlaying()) {
+                                    mPlayer.reset();
                                     mPlayer.stop();
+                                    mPlayer.seekTo(0);
                                 }
                                 startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
                                 finish();
@@ -147,7 +149,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
                 break;
             case R.id.btn_next:
                 if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.reset();
                     mPlayer.stop();
+                    mPlayer.seekTo(0);
                 }
                 startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
                 this.finish();
@@ -216,7 +220,9 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
     public void onRewardedVideoAdClosed() {
         hideProgressBar();
         if(mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.reset();
             mPlayer.stop();
+            mPlayer.seekTo(0);
         }
         startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
         this.finish();
@@ -248,23 +254,25 @@ public class AnswerActivity extends BaseActivity implements RewardedVideoAdListe
             AppDef.LifeScore += 1;
         }
         if(mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.reset();
             mPlayer.stop();
+            mPlayer.seekTo(0);
         }
         startActivity(new Intent(AnswerActivity.this, PlayActivity.class));
         this.finish();
     }
 
     public void checkVoice() {
+        if(mPlayer != null && mPlayer.isPlaying()){
+            mPlayer.reset();
+            mPlayer.stop();
+            mPlayer.seekTo(0);
+        }
         if(!AppDef.isVoice){
             btnSound.setImageResource(R.mipmap.btn_soundoff);
-            if(mPlayer != null && mPlayer.isPlaying()){
-                mPlayer.stop();
-            }
+
         } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
-            if (mPlayer != null && mPlayer.isPlaying()) {
-                mPlayer.stop();
-            }
             if(isPrepare){
                 mPlayer.start();
             }else {

@@ -117,7 +117,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                     public void onAdFailedToLoad(int errorCode) {
                         // Code to be executed when an ad request fails.
                         if(mPlayer != null && mPlayer.isPlaying()) {
+                            mPlayer.reset();
                             mPlayer.stop();
+                            mPlayer.seekTo(0);
                         }
                         startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                         finish();
@@ -140,7 +142,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                             AppDef.LifeScore += 1;
                         }
                         if(mPlayer != null && mPlayer.isPlaying()) {
+                            mPlayer.reset();
                             mPlayer.stop();
+                            mPlayer.seekTo(0);
                         }
                         startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                         finish();
@@ -160,7 +164,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             if(mPlayer != null && mPlayer.isPlaying()){
+                mPlayer.reset();
                 mPlayer.stop();
+                mPlayer.seekTo(0);
             }
             if(isConnectedNetwork()){
                 dialogAdExit(AppDef.IMAGE_AD, AppDef.DOWNLOAD_AD);
@@ -186,7 +192,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
         switch (view.getId()) {
             case R.id.btn_moregame:
                 if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.reset();
                     mPlayer.stop();
+                    mPlayer.seekTo(0);
                 }
                 if(AppDef.DOWNLOAD_AD != null && !AppDef.DOWNLOAD_AD.equals("")){
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppDef.DOWNLOAD_AD)));
@@ -198,8 +206,10 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                 AppDef.isVoice = !AppDef.isVoice;
                 if(!AppDef.isVoice){
                     btnSound.setImageResource(R.mipmap.btn_soundoff);
-                    if(mPlayer.isPlaying()){
+                    if(mPlayer != null && mPlayer.isPlaying()){
+                        mPlayer.reset();
                         mPlayer.stop();
+                        mPlayer.seekTo(0);
                     }
                 } else {
                     btnSound.setImageResource(R.mipmap.btn_soundon);
@@ -219,7 +229,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                         public void onAdFailedToLoad(int errorCode) {
                             // Code to be executed when an ad request fails.
                             if(mPlayer != null && mPlayer.isPlaying()) {
+                                mPlayer.reset();
                                 mPlayer.stop();
+                                mPlayer.seekTo(0);
                             }
                             startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                             finish();
@@ -239,7 +251,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
                         public void onAdClosed() {
                             // Code to be executed when when the interstitial ad is closed.
                             if(mPlayer != null && mPlayer.isPlaying()) {
+                                mPlayer.reset();
                                 mPlayer.stop();
+                                mPlayer.seekTo(0);
                             }
                             startActivity(new Intent(GameOverActivity.this, PlayActivity.class));
                             finish();
@@ -269,7 +283,9 @@ public class GameOverActivity extends BaseActivity implements RewardedVideoAdLis
         } else {
             btnSound.setImageResource(R.mipmap.btn_soundon);
             if (mPlayer != null && mPlayer.isPlaying()) {
+                mPlayer.reset();
                 mPlayer.stop();
+                mPlayer.seekTo(0);
             }
             if(isPrepare){
                 mPlayer.start();

@@ -21,6 +21,8 @@ import com.android.mkit.hoingu3.R;
 import com.hoingu3.app.utils.AppDef;
 import com.hoingu3.ui.adapter.MyDatabaseAdapter;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Random;
 
@@ -105,9 +107,7 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
                     isPrepare = true;
                 }
             });
-//            mPlayer.setDataSource(url);
-//            mPlayer.setOnPreparedListener(this);
-//            mPlayer.prepareAsync();
+
         }
 
     }
@@ -201,6 +201,7 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
         if (!response.toLowerCase().equals(sCorrectValue)) {
             if (AppDef.isVoice) {
                 if(mPlayer != null && mPlayer.isPlaying()) {
+                    mPlayer.reset();
                     mPlayer.stop();
                     mPlayer.seekTo(0);
                 }
@@ -218,7 +219,9 @@ public class PlayActivity extends BaseActivity implements Animation.AnimationLis
 
         } else {
             if(mPlayer != null && mPlayer.isPlaying()) {
+                mPlayer.reset();
                 mPlayer.stop();
+                mPlayer.seekTo(0);
             }
             AppDef.Score += 1;
             Intent intent = new Intent(PlayActivity.this, AnswerActivity.class);
