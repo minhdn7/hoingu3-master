@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.android.mkit.hoingu3"
+        applicationId "com.app.hoingu3.sieubua.sieutroll"
         minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
@@ -27,6 +27,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    //noinspection GradleCompatible
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:cardview-v7:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'

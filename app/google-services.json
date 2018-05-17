@@ -21,7 +21,38 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgOTbYfg1qwLp8Ucb50ErXqZFmiOLggAM"
+          "current_key": "AIzaSyAwNsSAjssXLLPdxSA3OGbuiYoXX0UrqiI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890485478418:android:a33c5c0f6e2a3ba4",
+        "android_client_info": {
+          "package_name": "com.app.hoingu3.sieubua.sieutroll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890485478418-1dt5mtnno9p9kipefosskg6kpkt66q0h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwNsSAjssXLLPdxSA3OGbuiYoXX0UrqiI"
         }
       ],
       "services": {
